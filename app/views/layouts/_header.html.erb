@@ -1,7 +1,8 @@
 <nav class="navbar navbar-default" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <button type="button" class="navbar-toggle" data-toggle="collapse"
+        data-target=".navbar-ex1-collapse">
         <span class="sr-only"><%= t ".toggle_navigation" %></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -12,14 +13,44 @@
           <%= t ".framgia" %>
         </p>
       </a>
+      <ul class="nav navbar-nav">
+        <li>
+
+        </li>
+      </ul>
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li class="navc"><%= link_to t(".home"), root_path %></li>
-        <li class="navc"><%= link_to t(".help"), "/help" %></li>
-        <li class="navc"><%= link_to t(".about"), "/about" %></li>
-        <li class="navc"><%= link_to t(".login"), "#" %></li>
-        <li class="navc"><%= link_to t(".signup"), "#" %></li>
+        <li class="navc">
+          <%= link_to t(".upload"),
+            new_document_path, class: "fa fa-upload" %>
+        </li>
+        <li class="navc"><%= link_to t(".user"), users_path %></li>
+        <% if user_signed_in? %>
+          <li class="dropdown navc">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <%= t(".account") %><b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to t(".profile"), "#" %></li>
+              <li>
+                <%= link_to t(".settings"),
+                  edit_user_registration_path(current_user) %>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <%= link_to t(".log_out"),
+                  destroy_user_session_path, method: :delete %>
+              </li>
+            </ul>
+          </li>
+          <li class="navc"><%= link_to t(".categories"), categories_path %></li>
+        <% else %>
+          <li class="navc"><%= link_to t(".login"),
+            new_user_session_path %></li>
+          <li class="navc"><%= link_to t(".signup"),
+            new_user_registration_path %></li>
+        <% end %>
       </ul>
     </div>
   </div>

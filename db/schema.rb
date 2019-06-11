@@ -18,44 +18,43 @@ ActiveRecord::Schema.define(version: 2019_06_10_081706) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "coins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "code"
-    t.integer "value"
-    t.integer "buyer_id"
-    t.integer "used_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "document_id"
+    t.bigint "user_id"
+    t.bigint "document_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_comments_on_document_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "documents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "desciption"
     t.integer "status"
-    t.integer "category_id"
-    t.integer "user_id"
+    t.bigint "category_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_documents_on_category_id"
+    t.index ["user_id"], name: "index_documents_on_user_id"
   end
 
   create_table "downloads", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "document_id"
+    t.bigint "user_id"
+    t.bigint "document_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_downloads_on_document_id"
+    t.index ["user_id"], name: "index_downloads_on_user_id"
   end
 
   create_table "favorites", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "document_id"
+    t.bigint "user_id"
+    t.bigint "document_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_favorites_on_document_id"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -67,10 +66,12 @@ ActiveRecord::Schema.define(version: 2019_06_10_081706) do
   end
 
   create_table "reads", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "document_id"
+    t.bigint "user_id"
+    t.bigint "document_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_reads_on_document_id"
+    t.index ["user_id"], name: "index_reads_on_user_id"
   end
 
   create_table "relationships", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -87,10 +88,20 @@ ActiveRecord::Schema.define(version: 2019_06_10_081706) do
     t.string "phone_number"
     t.string "password_digest"
     t.string "remember_digest"
-    t.integer "role", null: false, default: 0
+    t.integer "role"
     t.integer "point"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "comments", "documents"
+  add_foreign_key "comments", "users"
+  add_foreign_key "documents", "categories"
+  add_foreign_key "documents", "users"
+  add_foreign_key "downloads", "documents"
+  add_foreign_key "downloads", "users"
+  add_foreign_key "favorites", "documents"
+  add_foreign_key "favorites", "users"
+  add_foreign_key "reads", "documents"
+  add_foreign_key "reads", "users"
 end
